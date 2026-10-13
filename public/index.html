@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vertech Gestión</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Vertech Gestión</h1>
+    <nav>
+      <button data-sec="rentabilidad" class="activo">Rentabilidad</button>
+      <button data-sec="importar">Importar Amazon</button>
+      <button data-sec="costes">Costes</button>
+      <button data-sec="contadora">Contadora</button>
+    </nav>
+    <button class="secundario" id="salir">Salir</button>
+  </header>
+  <main>
+    <section id="rentabilidad" class="activa">
+      <div class="panel fila">
+        <label>Periodo
+          <select id="tipoPeriodo">
+            <option value="mes">Mes</option>
+            <option value="trimestre">Trimestre</option>
+            <option value="anio">Año</option>
+            <option value="libre">Personalizado</option>
+          </select>
+        </label>
+        <label id="lMes">Mes <input type="month" id="mes"></label>
+        <label id="lTrim" hidden>Trimestre
+          <select id="trim"><option value="1">1T</option><option value="2">2T</option><option value="3">3T</option><option value="4">4T</option></select>
+        </label>
+        <label id="lAnio" hidden>Año <input type="number" id="anio" min="2020" max="2100" style="width:90px"></label>
+        <label id="lDesde" hidden>Desde <input type="date" id="desde"></label>
+        <label id="lHasta" hidden>Hasta <input type="date" id="hasta"></label>
+        <button class="principal" id="calcular">Calcular</button>
+      </div>
+      <div id="avisoCostes" class="aviso" hidden></div>
+      <div class="kpis" id="kpis"></div>
+      <div class="panel"><h2>Cuenta de resultados</h2><div class="tabla" id="pyg"></div></div>
+      <div class="panel"><h2>Por producto</h2><div class="tabla" id="productos"></div>
+        <p class="nota">Los gastos de la cuenta sin producto (publicidad, suscripción, almacenamiento) se reparten según las ventas de cada producto. Las unidades reembolsadas se consideran devueltas al stock.</p></div>
+      <div class="panel"><h2>Por mes</h2><div class="tabla" id="meses"></div></div>
+    </section>
+
+    <section id="importar">
+      <div class="panel">
+        <h2>Subir extractos de Amazon</h2>
+        <p class="nota">Seller Central → Pagos → Informes → Informes por rango de fechas → "Transacciones" (CSV), o vuestro Excel con una hoja por mes. Puedes subir varios a la vez; si un archivo ya se subió, no se duplica nada.</p>
+        <form id="fExtractos" class="fila">
+          <input type="file" name="archivos" accept=".csv,.xlsx,.txt" multiple required>
+          <button class="principal">Importar</button>
+        </form>
+        <div id="mExtractos" class="mensaje"></div>
+      </div>
+      <div class="panel"><h2>Meses cargados</h2><div class="tabla" id="mesesCargados"></div></div>
+    </section>
+
+    <section id="costes">
+      <div class="panel">
+        <h2>Subir costes por archivo</h2>
+        <p class="nota">CSV o Excel con columnas <b>sku</b>, <b>coste</b> (sin IVA) y opcionalmente <b>desde</b> (fecha desde la que rige ese coste). Sin fecha, el coste vale para todo el histórico.</p>
+        <form id="fCostes" class="fila">
+          <input type="file" name="archivo" accept=".csv,.xlsx" required>
+          <button class="principal">Subir</button>
+        </form>
+        <div id="mCostes" class="mensaje"></div>
+      </div>
+      <div class="panel"><h2>Productos</h2><div class="tabla" id="tablaProductos"></div>
+        <p class="nota">Al cambiar un coste, el nuevo rige desde hoy y los meses anteriores conservan el coste antiguo. El primer coste de un producto vale para todo lo vendido.</p></div>
+    </section>
+
+    <section id="contadora">
+      <div class="panel">
+        <h2>Extracto trimestral de Amazon</h2>
+        <p class="nota">Excel con una hoja por mes y las mismas columnas que el informe de Amazon.</p>
+        <div class="fila">
+          <label>Año <input type="number" id="cAnio" min="2020" max="2100" style="width:90px"></label>
+          <label>Trimestre <select id="cTrim"><option value="1">1T</option><option value="2">2T</option><option value="3">3T</option><option value="4">4T</option></select></label>
+          <button class="principal" id="descargarExtracto">Descargar Excel</button>
+        </div>
+      </div>
+      <p class="nota">Próximamente: resúmenes mensuales en PDF, facturas de Amazon y de publicidad, y el ZIP mensual de facturas emitidas.</p>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

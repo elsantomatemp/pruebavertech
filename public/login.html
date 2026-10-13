@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vertech Gestión</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="login panel">
+    <h2>Vertech Gestión</h2>
+    <form id="f">
+      <label>Contraseña <input type="password" name="password" autocomplete="current-password" required autofocus></label>
+      <button class="principal">Entrar</button>
+      <div id="m" class="mensaje neg"></div>
+    </form>
+  </div>
+  <script>
+    document.getElementById('f').addEventListener('submit', async e => {
+      e.preventDefault();
+      const r = await fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: e.target.password.value }) });
+      if (r.ok) location.href = '/'; else document.getElementById('m').textContent = (await r.json()).error;
+    });
+  </script>
+</body>
+</html>
